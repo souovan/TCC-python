@@ -26,10 +26,10 @@ SET default_table_access_method = heap;
 
 CREATE TABLE public.agendamento (
     id_agendamento uuid NOT NULL,
-    fk_id_usuario uuid,
-    fk_id_vendedor uuid,
     data_agendamento date,
-    valor money
+    valor money,
+    fk_id_usuario uuid,
+    fk_id_vendedor uuid
 );
 
 
@@ -90,7 +90,6 @@ ALTER TABLE public.categoria_usuario OWNER TO postgres;
 
 CREATE TABLE public.cliente (
     id_cliente uuid NOT NULL,
-    fk_nome_categoria_cliente text,
     nome text,
     razao_social text,
     cpf numeric,
@@ -105,7 +104,8 @@ CREATE TABLE public.cliente (
     telefone numeric,
     celular numeric,
     email text,
-    observacao text
+    observacao text,
+    fk_nome_categoria_cliente uuid
 );
 
 
@@ -306,7 +306,7 @@ ALTER TABLE public.vendedor OWNER TO postgres;
 -- Data for Name: agendamento; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.agendamento (id_agendamento, fk_id_usuario, fk_id_vendedor, data_agendamento, valor) FROM stdin;
+COPY public.agendamento (id_agendamento, data_agendamento, valor, fk_id_usuario, fk_id_vendedor) FROM stdin;
 \.
 
 
@@ -339,6 +339,7 @@ COPY public.categoria_produto (id_categoria_produto, nome_categoria_produto) FRO
 --
 
 COPY public.categoria_usuario (id_categoria_usuario, nome_categoria_usuario, fk_id_permissao_acesso) FROM stdin;
+a5d6035e-7851-4f59-a297-f2348a958b54	test	5fd772fe-3ad7-494c-93e7-4d5f7cf8bd3d
 \.
 
 
@@ -346,7 +347,7 @@ COPY public.categoria_usuario (id_categoria_usuario, nome_categoria_usuario, fk_
 -- Data for Name: cliente; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.cliente (id_cliente, fk_nome_categoria_cliente, nome, razao_social, cpf, cnpj, endereco, numero_endereco, complemento, bairro, cidade, uf, cep, telefone, celular, email, observacao) FROM stdin;
+COPY public.cliente (id_cliente, nome, razao_social, cpf, cnpj, endereco, numero_endereco, complemento, bairro, cidade, uf, cep, telefone, celular, email, observacao, fk_nome_categoria_cliente) FROM stdin;
 \.
 
 
@@ -411,6 +412,7 @@ COPY public.orcamento (id_orcamento, fk_id_cliente, fk_id_usuario, valor_total, 
 --
 
 COPY public.permissao_acesso (id_permissao_acesso, nome_permissao) FROM stdin;
+5fd772fe-3ad7-494c-93e7-4d5f7cf8bd3d	test
 \.
 
 
@@ -435,6 +437,7 @@ COPY public.titulo_a_pagar (id_titulo_a_pagar, fk_id_compra, data_documento, dat
 --
 
 COPY public.usuario (id_usuario, fk_id_categoria_usuario, login, senha) FROM stdin;
+919d64e6-c102-47b8-81e2-47d18fded04b	a5d6035e-7851-4f59-a297-f2348a958b54	test	test123
 \.
 
 
@@ -759,11 +762,11 @@ ALTER TABLE ONLY public.item_orcamento
 
 
 --
--- Name: agendamento fk_id_usuario; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: estoque fk_id_produto; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.agendamento
-    ADD CONSTRAINT fk_id_usuario FOREIGN KEY (fk_id_usuario) REFERENCES public.usuario(id_usuario);
+ALTER TABLE ONLY public.estoque
+    ADD CONSTRAINT fk_id_produto FOREIGN KEY (fk_id_produto) REFERENCES public.produto(id_produto) ON UPDATE CASCADE ON DELETE CASCADE NOT VALID;
 
 
 --
@@ -783,11 +786,19 @@ ALTER TABLE ONLY public.orcamento
 
 
 --
+-- Name: agendamento fk_id_usuario; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.agendamento
+    ADD CONSTRAINT fk_id_usuario FOREIGN KEY (fk_id_usuario) REFERENCES public.usuario(id_usuario) ON UPDATE CASCADE ON DELETE CASCADE NOT VALID;
+
+
+--
 -- Name: agendamento fk_id_vendedor; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.agendamento
-    ADD CONSTRAINT fk_id_vendedor FOREIGN KEY (fk_id_vendedor) REFERENCES public.vendedor(id_vendedor);
+    ADD CONSTRAINT fk_id_vendedor FOREIGN KEY (fk_id_vendedor) REFERENCES public.vendedor(id_vendedor) ON UPDATE CASCADE ON DELETE CASCADE NOT VALID;
 
 
 --
@@ -795,7 +806,7 @@ ALTER TABLE ONLY public.agendamento
 --
 
 ALTER TABLE ONLY public.cliente
-    ADD CONSTRAINT fk_nome_categoria_cliente FOREIGN KEY (fk_nome_categoria_cliente) REFERENCES public.categoria_cliente(nome_categoria_cliente) NOT VALID;
+    ADD CONSTRAINT fk_nome_categoria_cliente FOREIGN KEY (fk_nome_categoria_cliente) REFERENCES public.categoria_cliente(id_categoria_cliente) ON UPDATE CASCADE ON DELETE CASCADE NOT VALID;
 
 
 --
@@ -804,14 +815,6 @@ ALTER TABLE ONLY public.cliente
 
 ALTER TABLE ONLY public.produto
     ADD CONSTRAINT fk_quantidade_produto FOREIGN KEY (fk_quantidade_produto) REFERENCES public.estoque(quantidade_produto) ON UPDATE CASCADE ON DELETE CASCADE NOT VALID;
-
-
---
--- Name: estoque id_produto; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.estoque
-    ADD CONSTRAINT id_produto FOREIGN KEY (fk_id_produto) REFERENCES public.produto(id_produto) NOT VALID;
 
 
 --
