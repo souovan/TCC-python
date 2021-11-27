@@ -36,7 +36,7 @@ class scheduling(db.Model):
 class client_category(db.Model):
     __tablename__ = 'categoria_cliente'
     id_categoria_cliente = db.Column(db.String(), primary_key=True)
-    nome_categoria_cliente = db.Column(db.String(), nullable=False)
+    nome_categoria_cliente = db.Column(db.Text(), nullable=False)
 
     def __init__(self, id_categoria_cliente, nome_categoria_cliente):
         self.id_categoria_cliente = id_categoria_cliente
@@ -45,7 +45,7 @@ class client_category(db.Model):
 class provider_category(db.Model):
     __tablename__ = 'categoria_fornecedor'
     id_categoria_fornecedor = db.Column(db.String(), primary_key=True)
-    nome_categoria_fornecedor = db.Column(db.String(), nullable=False)
+    nome_categoria_fornecedor = db.Column(db.Text(), nullable=False)
 
     def __init__(self, id_categoria_fornecedor, nome_categoria_fornecedor):
         self.id_categoria_fornecedor = id_categoria_fornecedor
@@ -54,7 +54,7 @@ class provider_category(db.Model):
 class product_category(db.Model):
     __tablename__ = 'categoria_produto'
     id_categoria_produto = db.Column(db.String(), primary_key=True)
-    nome_categoria_produto = db.Column(db.String(), nullable=False)
+    nome_categoria_produto = db.Column(db.Text(), nullable=False)
 
     def __init__(self, id_categoria_produto, nome_categoria_produto):
         self.id_categoria_produto = id_categoria_produto
@@ -63,7 +63,7 @@ class product_category(db.Model):
 class user_category(db.Model):
     __tablename__ = 'categoria_usuario'
     id_categoria_usuario = db.Column(db.String(), primary_key=True)
-    nome_categoria_usuario = db.Column(db.String(), nullable=False)
+    nome_categoria_usuario = db.Column(db.Text(), nullable=False)
     fk_id_permissao_acesso = db.Column(db.String(), nullable=False)
 
     def __init__(self, id_categoria_usuario, nome_categoria_usuario, fk_id_permissao_acesso):
@@ -88,7 +88,7 @@ class client(db.Model):
     cep = db.Column(db.String(), nullable=False)
     celular = db.Column(db.String(), nullable=False)
     email = db.Column(db.String(), nullable=False)
-    observacao = db.Column(db.String(), nullable=False)
+    observacao = db.Column(db.Text(), nullable=False)
 
     def __init__(self, id_cliente, fk_nome_categoria_cliente, nome, razao_social, cpf, cnpj, endereco, numero_endereco, complemento, bairro, cidade, uf, cep, celular, email, observacao):
         self.id_cliente = id_cliente
@@ -121,7 +121,7 @@ class purchase(db.Model):
 class payment_terms(db.Model):
     __tablename__ = 'condicao_pagamento'
     id_condicao_pagamento = db.Column(db.String(), primary_key=True)
-    nome_condicao_pagamento = db.Column(db.String(), nullable=False)
+    nome_condicao_pagamento = db.Column(db.Text(), nullable=False)
 
     def __init__(self, id_condicao_pagamento, nome_condicao_pagamento):
         self.id_condicao_pagamento = id_condicao_pagamento
@@ -146,7 +146,7 @@ class inventory(db.Model):
     __tablename__ = 'estoque'
     id_estoque = db.Column(db.String(), primary_key=True)
     fk_id_produto = db.Column(db.String(), nullable=False)
-    quantidade_produto = db.Column(db.String(), nullable=False)
+    quantidade_produto = db.Column(db.Integer(), nullable=False)
 
     def __init__(self, id_estoque, fk_id_produto, quantidade_produto):
         self.id_estoque = id_estoque
@@ -169,7 +169,7 @@ class provider(db.Model):
     cidade = db.Column(db.String(), nullable=False)
     uf = db.Column(db.String(), nullable=False)
     cep = db.Column(db.String(), nullable=False)
-    observacao = db.Column(db.String(), nullable=False)
+    observacao = db.Column(db.Text(), nullable=False)
 
     def __init__(self, id_fornecedor, fk_id_categoria_fornecedor, nome_fantasia, razao_social, telefone, celular, cpf, cnpj, email, endereco, complemento, bairro, cidade, uf, cep, observacao):
         self.id_fornecedor = id_fornecedor
@@ -220,7 +220,7 @@ class budget(db.Model):
 class access_permissions(db.Model):
     __tablename__ = 'permissao_acesso'
     id_permissao_acesso = db.Column(db.String(), primary_key=True)
-    nome_permissao = db.Column(db.String(), nullable=False)
+    nome_permissao = db.Column(db.Text(), nullable=False)
 
     def __init__(self, id_permissao_acesso, nome_permissao):
         self.id_permissao_acesso = id_permissao_acesso
@@ -292,9 +292,8 @@ def test():
         'test': 'test1'
     }, 200
 
-# A simple test for the db connection
-@app.route('/test_db_connection', methods=['GET'])
-def test_db_test_db_connection():
+@app.route('/users', methods=['GET'])
+def all_users():
     all_user = user.query.all()
     output = []
     for usuario in all_user:
