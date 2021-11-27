@@ -1,4 +1,8 @@
 python-flask/src/__pycache__/
+python-flask/src/venv/
 python-flask/venv/
+python-flask/__pycache__/
+python-fastapi/src/venv/
+python-fastapi/src/__pycache__/
 python-fastapi/__pycache__/
 python-fastapi/venv/
