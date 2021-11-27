@@ -161,7 +161,6 @@ class provider(db.Model):
     razao_social = db.Column(db.String(), nullable=False)
     telefone = db.Column(db.String(), nullable=False)
     celular = db.Column(db.String(), nullable=False)
-    cnpj = db.Column(db.String(), nullable=False)
     email = db.Column(db.String(), nullable=False)
     endereco = db.Column(db.String(), nullable=False)
     complemento = db.Column(db.String(), nullable=False)
@@ -292,7 +291,7 @@ def test():
         'test': 'test1'
     }, 200
 
-@app.route('/users', methods=['GET'])
+@app.route('/usuarios', methods=['GET'])
 def all_users():
     all_user = user.query.all()
     output = []
@@ -305,3 +304,154 @@ def all_users():
         output.append(current_user)
     return jsonify(output), 200
 
+@app.route('/agendamentos', methods=['GET'])
+def all_scheduling():
+    all_scheduling = scheduling.query.all()
+    output = []
+    for agendamento in all_scheduling:
+        current_scheduling = {}
+        current_scheduling['id_agendamento'] = agendamento.id_agendamento
+        current_scheduling['fk_id_usuario'] = agendamento.fk_id_usuario
+        current_scheduling['fk_id_vendedor'] = agendamento.fk_id_vendedor
+        current_scheduling['data_agendamento'] = agendamento.data_agendamento
+        output.append(current_scheduling)
+    return jsonify(output), 200
+
+@app.route('/clientes', methods=['GET'])
+def all_clients():
+    all_clients = client.query.all()
+    output = []
+    for clientes in all_clients:
+        current_clients = {}
+        current_clients['id_cliente'] = clientes.id_cliente
+        current_clients['fk_nome_categoria_cliente'] = clientes.fk_nome_categoria_cliente
+        current_clients['nome'] = clientes.nome
+        current_clients['razao_social'] = clientes.razao_social
+        current_clients['cpf'] = clientes.cpf
+        current_clients['cnpj'] = clientes.cnpj
+        current_clients['endereco'] = clientes.endereco
+        current_clients['numero_endereco'] = clientes.numero_endereco
+        current_clients['complemento'] = clientes.complemento
+        current_clients['bairro'] = clientes.bairro
+        current_clients['cidade'] = clientes.cidade
+        current_clients['uf'] = clientes.uf
+        current_clients['cep'] = clientes.cep
+        current_clients['celular'] = clientes.celular
+        current_clients['email'] = clientes.email
+        current_clients['observacao'] = clientes.observacao
+
+        output.append(current_clients)
+    return jsonify(output), 200
+
+@app.route('/compras', methods=['GET'])
+def all_purchase():
+    all_purchases = purchase.query.all()
+    output = []
+    for compras in all_purchases:
+        current_purchase = {}
+        current_purchase['id_compra'] = compras.id_compra
+        current_purchase['fk_id_cotacao_compra'] = compras.fk_id_cotacao_compra
+        current_purchase['fk_id_condicao_pagamento'] = compras.fk_id_condicao_pagamento
+        output.append(current_purchase)
+    return jsonify(output), 200
+
+@app.route('/estoque', methods=['GET'])
+def all_inventory():
+    all_inventory = inventory.query.all()
+    output = []
+    for estoques in all_inventory:
+        current_inventory = {}
+        current_inventory['id_estoque'] = estoques.id_estoque
+        current_inventory['fk_id_produto'] = estoques.fk_id_produto
+        current_inventory['quantidade_produto'] = estoques.quantidade_produto
+        output.append(current_inventory)
+    return jsonify(output), 200
+
+@app.route('/fornecedores', methods=['GET'])
+def all_providers():
+    all_providers = provider.query.all()
+    output = []
+    for fornecedores in all_providers:
+        current_providers = {}
+        current_providers['id_fornecedor'] = fornecedores.id_fornecedor
+        current_providers['fk_id_categoria_fornecedor'] = fornecedores.fk_id_categoria_fornecedor
+        current_providers['razao_social'] = fornecedores.razao_social
+        current_providers['telefone'] = fornecedores.telefone
+        current_providers['celular'] = fornecedores.celular
+        current_providers['email'] = fornecedores.email
+        current_providers['endereco'] = fornecedores.endereco
+        current_providers['complemento'] = fornecedores.complemento
+        current_providers['bairro'] = fornecedores.bairro
+        current_providers['cidade'] = fornecedores.cidade
+        current_providers['uf'] = fornecedores.uf
+        current_providers['cep'] = fornecedores.cep
+        current_providers['observacao'] = fornecedores.observacao
+        output.append(current_providers)
+    return jsonify(output), 200
+
+@app.route('/orcamentos', methods=['GET'])
+def all_budgets():
+    all_budgets = budget.query.all()
+    output = []
+    for orcamentos in all_budgets:
+        current_budgets = {}
+        current_budgets['id_item_orcamento'] = orcamentos.id_item_orcamento
+        current_budgets['fk_id_cotacao_compra'] = orcamentos.fk_id_cotacao_compra
+        current_budgets['fk_id_produto'] = orcamentos.fk_id_produto
+        output.append(current_budgets)
+    return jsonify(output), 200
+
+@app.route('/produtos', methods=['GET'])
+def all_products():
+    all_products = product.query.all()
+    output = []
+    for products in all_products:
+        current_products = {}
+        current_products['id_produto'] = products.id_produto
+        current_products['fk_id_categoria_produto'] = products.fk_id_categoria_produto
+        current_products['codigo_barra'] = products.codigo_barra
+        current_products['nome_produto'] = products.nome_produto
+        current_products['preco_custo'] = products.preco_custo
+        current_products['preco_venda'] = products.preco_venda
+        current_products['fk_quantidade_produto'] = products.fk_quantidade_produto
+        output.append(current_products)
+    return jsonify(output), 200
+
+@app.route('/titulos_a_pagar', methods=['GET'])
+def all_title_to_pay():
+    all_title_to_pay = title_to_pay.query.all()
+    output = []
+    for titles_to_pay in all_title_to_pay:
+        current_title_to_pay = {}
+        current_title_to_pay['fk_id_compra'] = titles_to_pay.fk_id_compra
+        current_title_to_pay['data_documento'] = titles_to_pay.data_documento
+        current_title_to_pay['data_vencimento'] = titles_to_pay.data_vencimento
+        current_title_to_pay['valor_titulo'] = titles_to_pay.valor_titulo
+        current_title_to_pay['desconto'] = titles_to_pay.desconto
+        output.append(current_title_to_pay)
+    return jsonify(output), 200
+
+@app.route('/vendas', methods=['GET'])
+def all_sales():
+    all_sales = sale.query.all()
+    output = []
+    for sales in all_sales:
+        current_sales = {}
+        current_sales['id_venda'] = sales.id_venda
+        current_sales['fk_id_orcamento'] = sales.fk_id_orcamento
+        current_sales['fk_id_condicao_pagamento'] = sales.fk_id_condicao_pagamento
+        output.append(current_sales)
+    return jsonify(output), 200
+
+@app.route('/vendedores', methods=['GET'])
+def all_sellers():
+    all_sellers = seller.query.all()
+    output = []
+    for sellers in all_sellers:
+        current_sellers = {}
+        current_sellers['id_vendedor'] = sellers.id_vendedor
+        current_sellers['nome_vendedor'] = sellers.nome_vendedor
+        current_sellers['login'] = sellers.login
+        current_sellers['senha'] = sellers.senha
+        output.append(current_sellers)
+    return jsonify(output), 200
