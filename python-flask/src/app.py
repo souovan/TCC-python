@@ -285,11 +285,11 @@ class seller(db.Model):
         self.login = login
         self.senha = senha
 
-@app.route('/test', methods=['GET'])
-def test():
-    return {
-        'test': 'test1'
-    }, 200
+# @app.route('/test', methods=['GET'])
+# def test():
+#     return {
+#         'test': 'test1'
+#     }, 200
 
 @app.route('/usuarios', methods=['GET'])
 def all_users():
@@ -303,6 +303,16 @@ def all_users():
         current_user['senha'] = usuario.senha
         output.append(current_user)
     return jsonify(output), 200
+
+@app.route('/usuario/<id>', methods=['GET'])
+def show_user(id):
+    usuario = user.query.get(id)
+    return jsonify([{
+        'id_usuario': usuario.id_usuario,
+        'fk_id_categoria_usuario': usuario.fk_id_categoria_usuario,
+        'login': usuario.login,
+        'senha': usuario.senha
+    }]), 200
 
 @app.route('/agendamentos', methods=['GET'])
 def all_scheduling():
