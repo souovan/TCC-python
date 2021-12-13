@@ -7,7 +7,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:password@localhos
 app.debug = True
 db = SQLAlchemy(app)
 
-class user(db.Model):
+class User(db.Model):
     __tablename__ = 'usuario'
     id_usuario = db.Column(db.String(), primary_key=True)
     fk_id_categoria_usuario = db.Column(db.String(), nullable=False)
@@ -20,7 +20,7 @@ class user(db.Model):
         self.login = login
         self.senha = senha
 
-class scheduling(db.Model):
+class Scheduling(db.Model):
     __tablename__ = 'agendamento'
     id_agendamento = db.Column(db.String(), primary_key=True)
     fk_id_usuario = db.Column(db.String(), nullable=False)
@@ -33,7 +33,7 @@ class scheduling(db.Model):
         self.fk_id_vendedor = fk_id_vendedor
         self.data_agendamento = data_agendamento
 
-class client_category(db.Model):
+class Client_category(db.Model):
     __tablename__ = 'categoria_cliente'
     id_categoria_cliente = db.Column(db.String(), primary_key=True)
     nome_categoria_cliente = db.Column(db.Text(), nullable=False)
@@ -42,7 +42,7 @@ class client_category(db.Model):
         self.id_categoria_cliente = id_categoria_cliente
         self.nome_categoria_cliente = nome_categoria_cliente
 
-class provider_category(db.Model):
+class Provider_category(db.Model):
     __tablename__ = 'categoria_fornecedor'
     id_categoria_fornecedor = db.Column(db.String(), primary_key=True)
     nome_categoria_fornecedor = db.Column(db.Text(), nullable=False)
@@ -51,7 +51,7 @@ class provider_category(db.Model):
         self.id_categoria_fornecedor = id_categoria_fornecedor
         self.nome_categoria_fornecedor = nome_categoria_fornecedor
 
-class product_category(db.Model):
+class Product_category(db.Model):
     __tablename__ = 'categoria_produto'
     id_categoria_produto = db.Column(db.String(), primary_key=True)
     nome_categoria_produto = db.Column(db.Text(), nullable=False)
@@ -60,7 +60,7 @@ class product_category(db.Model):
         self.id_categoria_produto = id_categoria_produto
         self.nome_categoria_produto = nome_categoria_produto
 
-class user_category(db.Model):
+class User_category(db.Model):
     __tablename__ = 'categoria_usuario'
     id_categoria_usuario = db.Column(db.String(), primary_key=True)
     nome_categoria_usuario = db.Column(db.Text(), nullable=False)
@@ -71,7 +71,7 @@ class user_category(db.Model):
         self.nome_categoria_usuario = nome_categoria_usuario
         self.fk_id_permissao_acesso = fk_id_permissao_acesso
 
-class client(db.Model):
+class Client(db.Model):
     __tablename__ = 'cliente'
     id_cliente = db.Column(db.String(), primary_key=True)
     fk_nome_categoria_cliente = db.Column(db.String(), nullable=False)
@@ -107,7 +107,7 @@ class client(db.Model):
         self.email = email
         self.observacao = observacao
 
-class purchase(db.Model):
+class Purchase(db.Model):
     __tablename__ = 'compra'
     id_compra = db.Column(db.String(), primary_key=True)
     fk_id_cotacao_compra = db.Column(db.String(), nullable=False)
@@ -118,7 +118,7 @@ class purchase(db.Model):
         self.fk_id_cotacao_compra = fk_id_cotacao_compra
         self.fk_id_condicao_pagamento = fk_id_condicao_pagamento
 
-class payment_terms(db.Model):
+class Payment_terms(db.Model):
     __tablename__ = 'condicao_pagamento'
     id_condicao_pagamento = db.Column(db.String(), primary_key=True)
     nome_condicao_pagamento = db.Column(db.Text(), nullable=False)
@@ -127,7 +127,7 @@ class payment_terms(db.Model):
         self.id_condicao_pagamento = id_condicao_pagamento
         self.nome_condicao_pagamento = nome_condicao_pagamento
 
-class purchase_quotation(db.Model):
+class Purchase_quotation(db.Model):
     __tablename__ = 'cotacao_compra'
     id_cotacao_compra = db.Column(db.String(), primary_key=True)
     fk_id_fornecedor = db.Column(db.String(), nullable=False)
@@ -142,7 +142,7 @@ class purchase_quotation(db.Model):
         self.valor_total = valor_total
         self.data_cotacao = data_cotacao
 
-class inventory(db.Model):
+class Inventory(db.Model):
     __tablename__ = 'estoque'
     id_estoque = db.Column(db.String(), primary_key=True)
     fk_id_produto = db.Column(db.String(), nullable=False)
@@ -153,7 +153,7 @@ class inventory(db.Model):
         self.fk_id_produto = fk_id_produto
         self.quantidade_produto = quantidade_produto
 
-class provider(db.Model):
+class Provider(db.Model):
     __tablename__ = 'fornecedor'
     id_fornecedor = db.Column(db.String(), primary_key=True)
     fk_id_categoria_fornecedor = db.Column(db.String(), nullable=False)
@@ -190,7 +190,7 @@ class provider(db.Model):
         self.email = email
         self.observacao = observacao
 
-class budget_item(db.Model):
+class Budget_item(db.Model):
     __tablename__ = 'item_orcamento'
     id_item_orcamento = db.Column(db.String(), primary_key=True)
     fk_id_cotacao_compra = db.Column(db.String(), nullable=False)
@@ -201,7 +201,7 @@ class budget_item(db.Model):
         self.fk_id_cotacao_compra = fk_id_cotacao_compra
         self.fk_id_produto = fk_id_produto
 
-class budget(db.Model):
+class Budget(db.Model):
     __tablename__ = 'orcamento'
     id_orcamento = db.Column(db.String(), primary_key=True)
     fk_id_cliente = db.Column(db.String(), nullable=False)
@@ -216,7 +216,7 @@ class budget(db.Model):
         self.valor_total = valor_total
         self.data_orcamento = data_orcamento
 
-class access_permissions(db.Model):
+class Access_permissions(db.Model):
     __tablename__ = 'permissao_acesso'
     id_permissao_acesso = db.Column(db.String(), primary_key=True)
     nome_permissao = db.Column(db.Text(), nullable=False)
@@ -225,7 +225,7 @@ class access_permissions(db.Model):
         self.id_permissao_acesso = id_permissao_acesso
         self.nome_permissao = nome_permissao
 
-class product(db.Model):
+class Product(db.Model):
     __tablename__ = 'produto'
     id_produto = db.Column(db.String(), primary_key=True)
     fk_id_categoria_produto = db.Column(db.String(), nullable=False)
@@ -244,7 +244,7 @@ class product(db.Model):
         self.preco_venda = preco_venda
         self.fk_quantidade_produto = fk_quantidade_produto
 
-class title_to_pay(db.Model):
+class Title_to_pay(db.Model):
     __tablename__ = 'titulo_a_pagar'
     id_titulo_a_pagar = db.Column(db.String(), primary_key=True)
     fk_id_compra = db.Column(db.String(), nullable=False)
@@ -261,7 +261,7 @@ class title_to_pay(db.Model):
         self.valor_titulo = valor_titulo
         self.desconto = desconto
 
-class sale(db.Model):
+class Sale(db.Model):
     __tablename__ = 'venda'
     id_venda = db.Column(db.String(), primary_key=True)
     fk_id_orcamento = db.Column(db.String(), nullable=False)
@@ -272,7 +272,7 @@ class sale(db.Model):
         self.fk_id_orcamento = fk_id_orcamento
         self.fk_id_condicao_pagamento = fk_id_condicao_pagamento
 
-class seller(db.Model):
+class Seller(db.Model):
     __tablename__ = 'vendedor'
     id_vendedor = db.Column(db.String(), primary_key=True)
     nome_vendedor = db.Column(db.String(), nullable=False)
@@ -293,7 +293,7 @@ class seller(db.Model):
 
 @app.route('/usuarios', methods=['GET'])
 def all_users():
-    all_user = user.query.all()
+    all_user = User.query.all()
     output = []
     for usuario in all_user:
         current_user = {}
@@ -306,7 +306,7 @@ def all_users():
 
 @app.route('/usuario/<id>', methods=['GET'])
 def show_user(id):
-    usuario = user.query.get(id)
+    usuario = User.query.get(id)
     return jsonify([{
         'id_usuario': usuario.id_usuario,
         'fk_id_categoria_usuario': usuario.fk_id_categoria_usuario,
@@ -316,7 +316,7 @@ def show_user(id):
 
 @app.route('/agendamentos', methods=['GET'])
 def all_scheduling():
-    all_scheduling = scheduling.query.all()
+    all_scheduling = Scheduling.query.all()
     output = []
     for agendamento in all_scheduling:
         current_scheduling = {}
@@ -329,7 +329,7 @@ def all_scheduling():
 
 @app.route('/clientes', methods=['GET'])
 def all_clients():
-    all_clients = client.query.all()
+    all_clients = Client.query.all()
     output = []
     for clientes in all_clients:
         current_clients = {}
@@ -355,7 +355,7 @@ def all_clients():
 
 @app.route('/compras', methods=['GET'])
 def all_purchase():
-    all_purchases = purchase.query.all()
+    all_purchases = Purchase.query.all()
     output = []
     for compras in all_purchases:
         current_purchase = {}
@@ -367,7 +367,7 @@ def all_purchase():
 
 @app.route('/estoque', methods=['GET'])
 def all_inventory():
-    all_inventory = inventory.query.all()
+    all_inventory = Inventory.query.all()
     output = []
     for estoques in all_inventory:
         current_inventory = {}
@@ -379,7 +379,7 @@ def all_inventory():
 
 @app.route('/fornecedores', methods=['GET'])
 def all_providers():
-    all_providers = provider.query.all()
+    all_providers = Provider.query.all()
     output = []
     for fornecedores in all_providers:
         current_providers = {}
@@ -401,7 +401,7 @@ def all_providers():
 
 @app.route('/orcamentos', methods=['GET'])
 def all_budgets():
-    all_budgets = budget.query.all()
+    all_budgets = Budget.query.all()
     output = []
     for orcamentos in all_budgets:
         current_budgets = {}
@@ -413,7 +413,7 @@ def all_budgets():
 
 @app.route('/produtos', methods=['GET'])
 def all_products():
-    all_products = product.query.all()
+    all_products = Product.query.all()
     output = []
     for products in all_products:
         current_products = {}
@@ -429,7 +429,7 @@ def all_products():
 
 @app.route('/titulos_a_pagar', methods=['GET'])
 def all_title_to_pay():
-    all_title_to_pay = title_to_pay.query.all()
+    all_title_to_pay = Title_to_pay.query.all()
     output = []
     for titles_to_pay in all_title_to_pay:
         current_title_to_pay = {}
@@ -443,7 +443,7 @@ def all_title_to_pay():
 
 @app.route('/vendas', methods=['GET'])
 def all_sales():
-    all_sales = sale.query.all()
+    all_sales = Sale.query.all()
     output = []
     for sales in all_sales:
         current_sales = {}
@@ -455,7 +455,7 @@ def all_sales():
 
 @app.route('/vendedores', methods=['GET'])
 def all_sellers():
-    all_sellers = seller.query.all()
+    all_sellers = Seller.query.all()
     output = []
     for sellers in all_sellers:
         current_sellers = {}
