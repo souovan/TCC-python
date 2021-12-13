@@ -465,3 +465,85 @@ def all_sellers():
         current_sellers['senha'] = sellers.senha
         output.append(current_sellers)
     return jsonify(output), 200
+
+@app.route('/categoria_clientes', methods=['GET'])
+def all_client_categories():
+    all_client_categories = Client_category.query.all()
+    output = []
+    for categories in all_client_categories:
+        current_categories = {}
+        current_categories['id_categoria_cliente'] = categories.id_categoria_cliente
+        current_categories['nome_categoria_cliente'] = categories.nome_categoria_cliente
+        output.append(current_categories)
+    return jsonify(output), 200
+
+@app.route('/categoria_fornecedores', methods=['GET'])
+def all_providers_categories():
+    all_providers_categories = Provider_category.query.all()
+    output = []
+    for providers in all_providers_categories:
+        current_providers = {}
+        current_providers['id_categoria_fornecedor'] = providers.id_categoria_fornecedor
+        current_providers['nome_categoria_fornecedor'] = providers.nome_categoria_fornecedor
+        output.append(current_providers)
+    return jsonify(output), 200
+
+@app.route('/categoria_usuarios', methods=['GET'])
+def all_users_categories():
+    all_users_categories = User_category.query.all()
+    output = []
+    for users in all_users_categories:
+        current_users = {}
+        current_users['id_categoria_usuario'] = users.id_categoria_usuario
+        current_users['nome_categoria_usuario'] = users.nome_categoria_usuario
+        current_users['fk_id_permissao_acesso'] = users.fk_id_permissao_acesso
+        output.append(current_users)
+    return jsonify(output), 200
+
+@app.route('/condicao_pagamento', methods=['GET'])
+def all_payment_terms():
+    all_payment_terms = Payment_terms.query.all()
+    output = []
+    for terms in all_payment_terms:
+        current_terms = {}
+        current_terms['id_condicao_pagamento'] = terms.id_condicao_pagamento
+        current_terms['nome_condicao_pagamento'] = terms.nome_condicao_pagamento
+        output.append(current_terms)
+    return jsonify(output), 200
+
+@app.route('/cotacao_compra', methods=['GET'])
+def all_purchase_quotations():
+    all_purchase_quotations = Purchase_quotation.query.all()
+    output = []
+    for quotations in all_purchase_quotations:
+        current_quotations = {}
+        current_quotations['id_cotacao_compra'] = quotations.id_cotacao_compra
+        current_quotations['fk_id_fornecedor'] = quotations.fk_id_fornecedor
+        current_quotations['fk_id_usuario'] = quotations.fk_id_usuario
+        current_quotations['valor_total'] = quotations.valor_total
+        current_quotations['data_cotacao'] = quotations.data_cotacao
+        output.append(current_quotations)
+    return jsonify(output), 200
+
+@app.route('/item_orcamento', methods=['GET'])
+def all_budget_itens():
+    all_budget_itens = Budget_item.query.all()
+    output = []
+    for items in all_budget_itens:
+        current_items = {}
+        current_items['id_item_orcamento'] = items.id_item_orcamento
+        current_items['fk_id_cotacao_compra'] = items.fk_id_cotacao_compra
+        current_items['fk_id_produto'] = items.fk_id_produto
+        output.append(current_items)
+    return jsonify(output), 200
+
+@app.route('/permissao_acesso', methods=['GET'])
+def all_access_permissions():
+    all_access_permissions = Access_permissions.query.all()
+    output = []
+    for permissions in all_access_permissions:
+        current_permissions = {}
+        current_permissions['id_permissao_acesso'] = permissions.id_permissao_acesso
+        current_permissions['nome_permissao'] = permissions.nome_permissao
+        output.append(current_permissions)
+    return jsonify(output), 200
