@@ -1,5 +1,6 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
+import uuid
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -291,6 +292,21 @@ class Seller(db.Model):
 #         'test': 'test1'
 #     }, 200
 
+# CRUD - Create
+
+def generate_uuid():
+    return str(uuid.uuid4())
+
+@app.route('/vendedores', methods=['POST'])
+def post_sellers():
+    all_sellers = request.get_json()
+    seller = Seller(id_vendedor=generate_uuid(), nome_vendedor=all_sellers['nome_vendedor'], login=all_sellers['login'], senha=all_sellers['senha'])
+    db.session.add(seller)
+    db.session.commit()
+    return jsonify(all_sellers), 201
+
+# CRUD - Read
+
 @app.route('/usuarios', methods=['GET'])
 def all_users():
     all_user = User.query.all()
@@ -547,3 +563,29 @@ def all_access_permissions():
         current_permissions['nome_permissao'] = permissions.nome_permissao
         output.append(current_permissions)
     return jsonify(output), 200
+
+# CRUD - Update
+
+@app.route('/vendedores/<id>', methods=['PUT'])
+def update_seller(id):
+    all_sellers = request.get_json()
+    seller = Seller.query.get(id)
+    
+    seller.nome_vendedor = all_sellers['nome_vendedor']
+    seller.login = all_sellers['login']
+    seller.senha = all_sellers['senha']
+
+    db.session.add(seller)
+    db.session.commit()
+    return jsonify(all_sellers), 202
+
+# CRUD - Delete
+
+@app.route('/vendedores/<id>', methods=['DELETE'])
+def delete_seller(id):
+    seller = Seller.query.get(id)
+
+    if seller:
+        db.session.delete(seller)
+        db.session.commit()
+    return jsonify("Usuário de ID "+id+" deletado"), 200
