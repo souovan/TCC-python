@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 import uuid
+from werkzeug.security import generate_password_hash 
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -300,7 +301,7 @@ def generate_uuid():
 @app.route('/vendedores', methods=['POST'])
 def post_sellers():
     all_sellers = request.get_json()
-    seller = Seller(id_vendedor=generate_uuid(), nome_vendedor=all_sellers['nome_vendedor'], login=all_sellers['login'], senha=all_sellers['senha'])
+    seller = Seller(id_vendedor=generate_uuid(), nome_vendedor=all_sellers['nome_vendedor'], login=all_sellers['login'], senha=generate_password_hash(all_sellers['senha']))
     db.session.add(seller)
     db.session.commit()
     return jsonify(all_sellers), 201
