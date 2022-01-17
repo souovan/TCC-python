@@ -293,12 +293,32 @@ class Seller(db.Model):
 #         'test': 'test1'
 #     }, 200
 
-# CRUD - Create
+#----------------#
+# CRUD - Create  #
+#----------------#
 
 def generate_uuid():
     return str(uuid.uuid4())
 
-@app.route('/vendedores', methods=['POST'])
+#agendamentos
+#clientes
+#compras
+#estoque
+#fornecedores
+#orcamentos
+#produtos
+#titulos_a_pagar
+#vendas
+
+#categoria_clientes
+#categoria_fornecedores
+#categoria_usuarios
+#condicao_pagamento
+#cotacao_compra
+#item_orcamento
+#permissao_acesso
+
+@app.route('/vendedor', methods=['POST'])
 def post_sellers():
     all_sellers = request.get_json()
     seller = Seller(id_vendedor=generate_uuid(), nome_vendedor=all_sellers['nome_vendedor'], login=all_sellers['login'], senha=generate_password_hash(all_sellers['senha']))
@@ -306,7 +326,23 @@ def post_sellers():
     db.session.commit()
     return jsonify(all_sellers), 201
 
-# CRUD - Read
+@app.route('/usuario', methods=['POST'])
+def post_users():
+    all_users = request.get_json()
+
+    user = User(id_usuario=generate_uuid(), fk_id_categoria_usuario=all_users['fk_id_categoria_usuario'], login=all_users['login'], senha=generate_password_hash(all_users['senha']))
+    
+    user_category = User_category.query.get(all_users['fk_id_categoria_usuario'])
+    if user_category:
+        db.session.add(user)
+        db.session.commit()
+        return jsonify(all_users), 201
+    else:
+        return jsonify("Escolha uma categoria de usuário válida"), 404
+
+#----------------#
+# CRUD - Read    #
+#----------------#
 
 @app.route('/usuarios', methods=['GET'])
 def all_users():
@@ -565,9 +601,11 @@ def all_access_permissions():
         output.append(current_permissions)
     return jsonify(output), 200
 
-# CRUD - Update
+#----------------#
+# CRUD - Update  #
+#----------------#
 
-@app.route('/vendedores/<id>', methods=['PUT'])
+@app.route('/vendedor/<id>', methods=['PUT'])
 def update_seller(id):
     all_sellers = request.get_json()
     seller = Seller.query.get(id)
@@ -580,13 +618,78 @@ def update_seller(id):
     db.session.commit()
     return jsonify(all_sellers), 202
 
-# CRUD - Delete
+@app.route('/usuario/<id>', methods=['PUT'])
+def update_user(id):
+    all_users = request.get_json()
+    user = User.query.get(id)
+    
+    user.fk_id_categoria_usuario = all_users['fk_id_categoria_usuario']
+    user.login = all_users['login']
+    user.senha = all_users['senha']
 
-@app.route('/vendedores/<id>', methods=['DELETE'])
+    user_category = User_category.query.get(all_users['fk_id_categoria_usuario'])
+    if user_category:
+        db.session.add(user)
+        db.session.commit()
+        return jsonify(all_users), 201
+    else:
+        return jsonify("Falha ao atualizar usuário de ID "+id), 404
+
+#agendamentos
+#clientes
+#compras
+#estoque
+#fornecedores
+#orcamentos
+#produtos
+#titulos_a_pagar
+#vendas
+
+
+#categoria_clientes
+#categoria_fornecedores
+#categoria_usuarios
+#condicao_pagamento
+#cotacao_compra
+#item_orcamento
+#permissao_acesso
+
+#----------------#
+# CRUD - Delete  #
+#----------------#
+
+@app.route('/vendedor/<id>', methods=['DELETE'])
 def delete_seller(id):
     seller = Seller.query.get(id)
 
     if seller:
         db.session.delete(seller)
         db.session.commit()
+    return jsonify("Vendedor de ID "+id+" deletado"), 200
+
+@app.route('/usuario/<id>', methods=['DELETE'])
+def delete_user(id):
+    user = User.query.get(id)
+
+    if user:
+        db.session.delete(user)
+        db.session.commit()
     return jsonify("Usuário de ID "+id+" deletado"), 200
+
+#agendamentos
+#clientes
+#compras
+#estoque
+#fornecedores
+#orcamentos
+#produtos
+#titulos_a_pagar
+#vendas
+
+#categoria_clientes
+#categoria_fornecedores
+#categoria_usuarios
+#condicao_pagamento
+#cotacao_compra
+#item_orcamento
+#permissao_acesso
