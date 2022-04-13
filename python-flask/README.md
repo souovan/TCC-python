@@ -35,7 +35,7 @@ flask run -h 0.0.0.0 -p 5000
 # Para executar em container com Docker
 
 ```bash
-sudo podman pull docker.io/souovan/apptccpython && \
+sudo docker pull docker.io/souovan/apptccpython && \
 sudo docker run -it -d --name apptccpython -p 5000:5000 docker.io/souovan/apptccpython && \ 
 sudo docker exec -it apptccpython bash && \
 ```
